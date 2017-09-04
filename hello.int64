@@ -1,0 +1,92 @@
+/* File: arrays.int64
+ * Implementation of typical array operations.
+ * (C) 2017 Ariel Ortiz, ITESM CEM
+ */
+
+// Prints all the elements in the array list referred by handle a.
+print_array(a) {
+    var x, first;
+    first = true;
+    printc('{');
+    for (x in a) {
+        if (first) {
+            first = false;
+        } else {
+            prints(", ");
+        }
+        printi(x);
+    }
+    printc('}');
+}
+
+// Returns the addition of all elements in the array list referred by handle a.
+sum_array(a) {
+    var x, sum;
+    sum = 0;
+    for (x in a) {
+        sum = sum + x;
+    }
+    return sum;
+}
+
+// Returns the largest element in the array list referred by handle a.
+max_array(a) {
+    var max, x;
+    max = 0x8000000000000000; // This is the smallest number for a 64-bit int.
+    for (x in a) {
+        if (x > max) {
+            max = x;
+        }
+    }
+    return max;
+}
+
+// Sorts in-place the elements in the array list referred by handle a.
+// Uses the bubble sort algorithm.
+sort_array(a) {
+    var i, j, t, n, swap;
+    n = size(a);
+    i = 0;
+    while (i < n - 1) {
+        j = 0;
+        swap = false;
+        while (j < n - i - 1) {
+            if (get(a, j) > get(a, j + 1)) {
+                t = get(a, j);
+                set(a, j, get(a, j + 1));
+                set(a, j + 1, t);
+                swap = true;
+            }
+            j = j + 1;
+        }
+        if (!swap) {
+            break;
+        }
+        i = i + 1;
+    }
+}
+
+main() {
+    var array, sum, max;
+    array = {
+        73, 77, 56, 10, 14,
+        54, 75, 62, 71, 10,
+         3, 71, 16, 49, 66,
+        91, 69, 62, 25, 65
+    };
+    prints("Original array: ");
+    print_array(array);
+    println();
+    sum = sum_array(array);
+    max = max_array(array);
+    prints("Sum of array:   ");
+    printi(sum);
+    println();
+    prints("Max of array:   ");
+    printi(max);
+    println();
+    sort_array(array);
+    prints("Sorted array:   ");
+    print_array(array);
+    println();
+}
